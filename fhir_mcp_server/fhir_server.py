@@ -151,7 +151,201 @@ def make_fhir_request(endpoint: str, params: Optional[Dict[str, Any]] = None) ->
         }
 
 
-# TODO: Add patient resource tools
+@mcp.tool()
+def get_patient_by_id(patient_id: str) -> Dict[str, Any]:
+    """
+    Retrieve a specific patient by their FHIR patient ID.
+    
+    Args:
+        patient_id: The FHIR patient ID to retrieve
+        
+    Returns:
+        Dictionary containing the patient information
+    """
+    return make_fhir_request(f"Patient/{patient_id}")
+
+
+@mcp.tool()
+def search_patients_by_name(
+    given_name: Optional[str] = None,
+    family_name: Optional[str] = None,
+    count: Optional[int] = None
+) -> Dict[str, Any]:
+    """
+    Search for patients by name using FHIR search parameters.
+    
+    Args:
+        given_name: Patient's given (first) name
+        family_name: Patient's family (last) name
+        count: Maximum number of results to return (default: 10, max: 100)
+        
+    Returns:
+        Dictionary containing the search results
+    """
+    params = {}
+    
+    if given_name:
+        params["given"] = given_name
+    if family_name:
+        params["family"] = family_name
+    if count:
+        params["_count"] = min(count, 100)  # Cap at 100 as per FHIR spec
+    
+    # At least one search parameter is required
+    if not params:
+        return {
+            "success": False,
+            "error": "At least one search parameter (given_name or family_name) must be provided",
+            "message": "Invalid search parameters"
+        }
+    
+    return make_fhir_request("Patient", params)
+
+
+@mcp.tool()
+def search_patients_by_identifier(
+    identifier_type: str,
+    identifier_value: str,
+    count: Optional[int] = None
+) -> Dict[str, Any]:
+    """
+    Search for patients by identifier (e.g., MRN, SSN).
+    
+    Args:
+        identifier_type: Type of identifier (e.g., "MR", "SS")
+        identifier_value: The identifier value to search for
+        count: Maximum number of results to return (default: 10, max: 100)
+        
+    Returns:
+        Dictionary containing the search results
+    """
+    params = {
+        "identifier": f"{identifier_type}|{identifier_value}"
+    }
+    
+    if count:
+        params["_count"] = min(count, 100)
+    
+    return make_fhir_request("Patient", params)
+
+
+@mcp.tool()
+def search_patients_by_birthdate(
+    birthdate: str,
+    count: Optional[int] = None
+) -> Dict[str, Any]:
+    """
+    Search for patients by birth date.
+    
+    Args:
+        birthdate: Patient's birth date in YYYY-MM-DD format
+        count: Maximum number of results to return (default: 10, max: 100)
+        
+    Returns:
+        Dictionary containing the search results
+    """
+    params = {
+        "birthdate": birthdate
+    }
+    
+    if count:
+        params["_count"] = min(count, 100)
+    
+    return make_fhir_request("Patient", params)
+
+
+@mcp.tool()
+def search_patients_by_phone(
+    phone_number: str,
+    count: Optional[int] = None
+) -> Dict[str, Any]:
+    """
+    Search for patients by phone number.
+    
+    Args:
+        phone_number: Patient's phone number
+        count: Maximum number of results to return (default: 10, max: 100)
+        
+    Returns:
+        Dictionary containing the search results
+    """
+    params = {
+        "phone": phone_number
+    }
+    
+    if count:
+        params["_count"] = min(count, 100)
+    
+    return make_fhir_request("Patient", params)
+
+
+@mcp.tool()
+def search_patients_by_email(
+    email: str,
+    count: Optional[int] = None
+) -> Dict[str, Any]:
+    """
+    Search for patients by email address.
+    
+    Args:
+        email: Patient's email address
+        count: Maximum number of results to return (default: 10, max: 100)
+        
+    Returns:
+        Dictionary containing the search results
+    """
+    params = {
+        "email": email
+    }
+    
+    if count:
+        params["_count"] = min(count, 100)
+    
+    return make_fhir_request("Patient", params)
+
+
+@mcp.tool()
+def search_patients_by_address(
+    postal_code: Optional[str] = None,
+    city: Optional[str] = None,
+    state: Optional[str] = None,
+    count: Optional[int] = None
+) -> Dict[str, Any]:
+    """
+    Search for patients by address components.
+    
+    Args:
+        postal_code: Patient's postal/ZIP code
+        city: Patient's city
+        state: Patient's state
+        count: Maximum number of results to return (default: 10, max: 100)
+        
+    Returns:
+        Dictionary containing the search results
+    """
+    params = {}
+    
+    if postal_code:
+        params["address-postalcode"] = postal_code
+    if city:
+        params["address-city"] = city
+    if state:
+        params["address-state"] = state
+    
+    if count:
+        params["_count"] = min(count, 100)
+    
+    # At least one address parameter is required
+    if not params:
+        return {
+            "success": False,
+            "error": "At least one address parameter (postal_code, city, or state) must be provided",
+            "message": "Invalid search parameters"
+        }
+    
+    return make_fhir_request("Patient", params)
+
+
 # TODO: Add clinical data tools (observations, conditions, medications)
 # TODO: Add system capabilities tool
 
