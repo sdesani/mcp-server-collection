@@ -22,6 +22,28 @@ A comprehensive MCP server that provides access to the National Plan and Provide
 - Healthcare network analysis
 - Provider credentialing workflows
 
+### [FHIR MCP Server](fhir_mcp_server/README.md)
+A Model Context Protocol server that provides access to Oracle Cerner's FHIR R4 APIs. This server implements the FHIR R4.0.1 specification for healthcare data exchange, enabling seamless integration with healthcare systems.
+
+**Features:**
+- Patient management and search capabilities
+- Clinical data access (observations, conditions, medications)
+- FHIR R4.0.1 compliant implementation
+- Oracle Cerner API integration
+- Comprehensive error handling and authentication
+
+**Use Cases:**
+- Electronic Health Record (EHR) integration
+- Clinical data retrieval and analysis
+- Patient information management
+- Healthcare application development
+
+**Use Cases:**
+- Electronic Health Record (EHR) integration
+- Clinical data retrieval and analysis
+- Patient information management
+- Healthcare application development
+
 ## Getting Started
 
 Each MCP server in this collection is self-contained and can be run independently. Refer to the individual server README files for specific installation and usage instructions.
