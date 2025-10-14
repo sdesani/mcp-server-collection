@@ -111,7 +111,7 @@ def make_fhir_request(endpoint: str, params: Optional[Dict[str, Any]] = None) ->
         url = f"{FHIR_API_BASE_URL}/{FHIR_TENANT_ID}/{endpoint}"
         headers = get_auth_headers()
         
-        response = requests.get(url, headers=headers, params=params, timeout=30)
+        response = requests.get(url, headers=headers, params=params, timeout=60)
         
         if response.status_code == 200:
             return {
