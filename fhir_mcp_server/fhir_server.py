@@ -346,8 +346,82 @@ def search_patients_by_address(
     return make_fhir_request("Patient", params)
 
 
-# TODO: Add clinical data tools (observations, conditions, medications)
-# TODO: Add system capabilities tool
+@mcp.tool()
+def get_patient_observations(patient_id: str, count: Optional[int] = None) -> Dict[str, Any]:
+    """
+    Retrieve observations for a specific patient.
+    
+    Args:
+        patient_id: The FHIR patient ID
+        count: Maximum number of results to return (default: 10, max: 100)
+        
+    Returns:
+        Dictionary containing the patient's observations
+    """
+    params = {
+        "subject": f"Patient/{patient_id}"
+    }
+    
+    if count:
+        params["_count"] = min(count, 100)
+    
+    return make_fhir_request("Observation", params)
+
+
+@mcp.tool()
+def get_patient_conditions(patient_id: str, count: Optional[int] = None) -> Dict[str, Any]:
+    """
+    Retrieve conditions for a specific patient.
+    
+    Args:
+        patient_id: The FHIR patient ID
+        count: Maximum number of results to return (default: 10, max: 100)
+        
+    Returns:
+        Dictionary containing the patient's conditions
+    """
+    params = {
+        "patient": f"Patient/{patient_id}"
+    }
+    
+    if count:
+        params["_count"] = min(count, 100)
+    
+    return make_fhir_request("Condition", params)
+
+
+@mcp.tool()
+def get_patient_medications(patient_id: str, count: Optional[int] = None) -> Dict[str, Any]:
+    """
+    Retrieve medication requests for a specific patient.
+    
+    Args:
+        patient_id: The FHIR patient ID
+        count: Maximum number of results to return (default: 10, max: 100)
+        
+    Returns:
+        Dictionary containing the patient's medication requests
+    """
+    params = {
+        "patient": f"Patient/{patient_id}"
+    }
+    
+    if count:
+        params["_count"] = min(count, 100)
+    
+    return make_fhir_request("MedicationRequest", params)
+
+
+@mcp.tool()
+def get_fhir_capabilities() -> Dict[str, Any]:
+    """
+    Retrieve the FHIR server's capability statement (metadata).
+    This provides information about the server's capabilities and supported resources.
+    
+    Returns:
+        Dictionary containing the FHIR server capabilities
+    """
+    return make_fhir_request("metadata")
 
 
 def main():
