@@ -38,12 +38,6 @@ A Model Context Protocol server that provides access to Oracle Cerner's FHIR R4 
 - Patient information management
 - Healthcare application development
 
-**Use Cases:**
-- Electronic Health Record (EHR) integration
-- Clinical data retrieval and analysis
-- Patient information management
-- Healthcare application development
-
 ## Getting Started
 
 Each MCP server in this collection is self-contained and can be run independently. Refer to the individual server README files for specific installation and usage instructions.
